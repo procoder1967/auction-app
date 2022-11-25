@@ -1,6 +1,15 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
+import json
+
+from django.shortcuts import get_object_or_404, render, redirect
+from django.http import Http404
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+
+from .models import User, Profile
+from .forms import LoginForm, SignupForm
 
 # Create your views here.
 def base_index(request):
@@ -20,3 +29,4 @@ def sign_up(request):
     }
 
     return render(request, 'register.html', context)
+
