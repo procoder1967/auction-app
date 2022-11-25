@@ -31,14 +31,24 @@ class Login(forms.Form):
 class SignupForm(forms.Form):
     '''Form for user signup'''
 
+    username = forms.CharField(
+        label = 'Username',
+        widget=forms.TextInput(
+            attrs={
+                'autocomplete': 'username',
+            }
+        )
+    )
+
     email = forms.EmailField(
-        label='Username',
+        label='Email',
         widget=forms.EmailInput(
             attrs={
                 'autocomplete': 'email',
             }
         )
     )
+    
     password = forms.CharField(
         label='Password',
         max_length=50,
