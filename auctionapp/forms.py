@@ -28,5 +28,39 @@ class Login(forms.Form):
         )
     )
 
+class SignupForm(forms.Form):
+    '''Form for user signup'''
+
+    email = forms.EmailField(
+        label='Username',
+        widget=forms.EmailInput(
+            attrs={
+                'autocomplete': 'email',
+            }
+        )
+    )
+    password = forms.CharField(
+        label='Password',
+        max_length=50,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'password'})
+    )
+    password_confirm = forms.CharField(
+        label='Confirm Password',
+        max_length=50,
+        widget=forms.PasswordInput,
+    )
+
+    helper = FormHelper()
+    helper.form_id = 'signup-form'
+    helper.layout = Layout(
+        Row('email', css_class='mb-2'),
+        Row('password', css_class='mb-2'),
+        Row('password_confirm', css_class='mb-2'),
+        FormActions(
+            Submit('signup', 'Sign up', css_class="btn-primary"),
+            css_class='mt-3'
+        )
+    )
+
 
 
