@@ -12,27 +12,27 @@ from .forms import Login, SignupForm
 def base_index(request):
     return HttpResponse("Hello, world. You're at the base index.")
 
-def sign_up(request):
+# def sign_up(request):
 
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        username = form.cleaned_data['username']
-        email = form.cleaned_data['email']
-        password = form.cleaned_data['password']
-        newUser = User.objects.create(email = email, username =username)
-        newUser.set_password(password)
-        newUser.save()
+#     if request.method == 'POST':
+#         form = SignupForm(request.POST)
+#         username = form.cleaned_data['username']
+#         email = form.cleaned_data['email']
+#         password = form.cleaned_data['password']
+#         newUser = User.objects.create(email = email)
+#         newUser.set_password(password)
+#         newUser.save()
 
-        user =auth.authenticate(username=username, email=email, password =password)
+#         user =auth.authenticate(email=email, password =password)
 
-        if user is not None:
-            auth.login(request,user)
-            return redirect('') #FILL IN
+#         if user is not None:
+#             auth.login(request,user)
+#             return redirect('') #FILL IN
     
-    return render(request, 'mainapp/auth/signup.html', {'form': SignupForm})
+#     return render(request, 'auctionapp/auth/signup.html', {'form': SignupForm})
 
 def login_view(request):
-
+    form = Login()
     if request.method == 'POST':
         form = Login(request.POST)
         if form.is_valid():
@@ -40,7 +40,7 @@ def login_view(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             
-            user =auth.authenticate(username=username, email=email, password =password)
+            user =auth.authenticate(email=email, password =password)
             if user is not None:
                 auth.login(request,user)
                 return redirect('') #FILL IN
@@ -50,8 +50,8 @@ def login_view(request):
             })
 
         # invalid form
-        return render(request, 'mainapp/auth/login.html', {
+        return render(request, 'auctionapp/auth/login.html', {
             'form': form
         })
 
-    return render(request, 'mainapp/auth/login.html', {'form': form})
+    return render(request, 'auctionapp/auth/login.html', {'form': form})
