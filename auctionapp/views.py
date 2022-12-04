@@ -55,3 +55,28 @@ def login_view(request):
         })
 
     return render(request, 'auctionapp/auth/login.html', {'form': form})
+
+
+@login_required
+def GET_Items(request):
+    #mounted
+    return
+
+@login_required
+def Add_Items(request):
+    return
+
+def GET_Search(request):
+    return
+
+    
+def update_profile(request):
+    return
+
+@login_required
+def message(request):
+    return
+
+def message_winner(request):
+    #cron job
+    return
