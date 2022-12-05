@@ -70,8 +70,34 @@ def GET_Search(request):
     return
 
     
-def update_profile(request):
-    return
+def profile(request):
+    user = request.user
+
+    if 'bio' in request.POST and request.POST['bio']:
+        bio = request.POST['bio']
+        if user.profile:
+            user.profile.bio = bio
+            user.profile.save()
+        else:
+            profile = Profile(bio=bio, username = 'Anon')
+            profile.save()
+            user.profile = profile
+        user.save()
+    
+    info = {
+        'user':user,
+        'page': user.profile,
+        'session_key': request.session.session_key,
+        'meta': request.META,
+        
+        }
+    #not sure about this tbh
+    return render(request, 'auctionapp/frontend/src/Home.vue', info)
+    
+
+
+
+
 
 @login_required
 def message(request):

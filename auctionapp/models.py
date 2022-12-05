@@ -16,6 +16,16 @@ class Profile(models.Model):
     username = models.ForeignKey(max_length=50,to='User',related_name='profile',on_delete=models.CASCADE)
     image = models.ImageField(upload_to='profile_pics',blank=True)
     bio = models.TextField(max_length=500,blank=True)
+    
+    def __str__(self):
+        return f"{self.text} ({self.member_check})"
+
+    def to_dict(self):
+        return {
+            'username': self.username,
+            'bio': self.text,
+            'image': self.image.url if self.image else None,
+        }
 
 class Item(models.Model):
     start_bid = models.DecimalField(max_digits=6,decimal_places=2)
