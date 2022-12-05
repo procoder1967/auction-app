@@ -1,11 +1,10 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpRequest,Http404,JsonResponse
 import json
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import Http404
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Profile
+from .models import User, Profile,Item
 from .forms import Login, SignupForm
 
 # Create your views here.
@@ -58,9 +57,14 @@ def login_view(request):
 
 
 @login_required
-def GET_Items(request):
-    #mounted
-    return
+def GET_Items(request: HttpRequest)->HttpResponse:
+    if request.method == 'GET':
+        return JsonResponse({
+            'items': [
+                item.to_dict()
+                for item in Item.objects.all()
+            ]
+        })
 
 @login_required
 def Add_Items(request):
