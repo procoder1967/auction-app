@@ -57,7 +57,7 @@ def login_view(request):
 
 
 @login_required
-def GET_Items(request: HttpRequest)->HttpResponse:
+def Item_api(request: HttpRequest)->HttpResponse:
     if request.method == 'GET':
         return JsonResponse({
             'items': [
@@ -65,10 +65,25 @@ def GET_Items(request: HttpRequest)->HttpResponse:
                 for item in Item.objects.all()
             ]
         })
+    if  request.method == 'POST':
+        body = json.loads(request.body)
+
+        item = Item(
+                    start_bid = body['start_bid'],
+                    bid = body['bid'],
+                    title=body['title'],
+                    description = body['description'],
+                    image = body['image'],
+                    bid_time_finish = body['bid_time_finish'],
+                    bought = body['bought'],
+                )
+        item.save()
+        return JsonResponse({
+            item.to_dict()
+            for item in Item.objects.all()
+        })
 
 @login_required
-def Add_Items(request):
-    return
 
 def GET_Search(request):
     return
