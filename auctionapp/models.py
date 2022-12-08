@@ -22,7 +22,15 @@ class User(AbstractUser):
             'messages':self.messages,
             'Profile':self.Profile,
         }
+    
+    def messages_senrec(self,other):
+        #someone sends you a message
+        m1 = Messages.objects.filter(sender = other, receiver = self)
 
+        #you send a message to someone
+        m2 = Messages.objects.filter(sender = self, sender = other)
+
+        return m1.union(m2).order_by('-time_sent')
 
 class Profile(models.Model):
     username = models.ForeignKey(max_length=50,to='User',related_name='profile',on_delete=models.CASCADE)
@@ -66,8 +74,8 @@ class Item(models.Model):
 class Messages(models.Model):
     question_message = models.CharField(max_length=500)
     time_sent = models.DateTimeField(default=timezone.now)
-    sender = models.ForeignKey(to='User',related_name='sent_messages',on_delete=models.CASCADE)
-    receiver = models.ForeignKey(to='User',related_name='received_messages',on_delete=models.CASCADE)
+    sender = models.ForeignKey(to=User,related_name='sent_messages',on_delete=models.CASCADE)
+    receiver = models.ForeignKey(to=User,related_name='received_messages',on_delete=models.CASCADE)
 
     def __str__(self):
         return f"({self.sender} to f{self.receiver})"
@@ -76,9 +84,9 @@ class Messages(models.Model):
         return{
             'id':self.id,
             'question_message':self.question_message,
-            'time_sent':self.time_sent,
-            'sender':self.sender,
-            'receiver':self.receiver,
+            'time_sent':self.time_sent.strftime("%Y-%d-%mT%H:%M"),
+            'sender':self.sender.username,
+            'receiver':self.receiver.username,
         }
 
 
