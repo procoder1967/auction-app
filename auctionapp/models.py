@@ -28,7 +28,7 @@ class User(AbstractUser):
         m1 = Messages.objects.filter(sender = other, receiver = self)
 
         #you send a message to someone
-        m2 = Messages.objects.filter(sender = self, sender = other)
+        m2 = Messages.objects.filter(sender = self, receiver = other)
 
         return m1.union(m2).order_by('-time_sent')
 
