@@ -42,5 +42,3 @@ def addItemImage(request):
         return HttpResponse(user.item.image.url)
     else:
         raise Http404('No image received')
-    
-s

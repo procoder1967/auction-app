@@ -85,38 +85,28 @@ def Item_api(request: HttpRequest)->HttpResponse:
 
 @login_required
 
-def GET_Search(request):
-    return
+def GET_ItemSearch(request: HttpRequest, profile_id: int)-> HttpResponse:
+    #We might change to work serilizers
+    item = get_object_or_404(Item, id=profile_id) 
+    if request.method =='GET':
+        return JsonResponse(item.to_dict())
 
-    
-def profile(request):
-    user = request.user
+def profile_GET(request: HttpRequest, profile_id: int)-> HttpResponse:
+    profile = get_object_or_404(Profile, id=profile_id) 
+    if request.method =='GET':
+        return JsonResponse(profile.to_dict())
 
-    if 'bio' in request.POST and request.POST['bio']:
-        bio = request.POST['bio']
-        if user.profile:
-            user.profile.bio = bio
-            user.profile.save()
-        else:
-            profile = Profile(bio=bio, username = 'Anon')
-            profile.save()
-            user.profile = profile
-        user.save()
-    
-    info = {
-        'user':user,
-        'page': user.profile,
-        'session_key': request.session.session_key,
-        'meta': request.META,
-        
-        }
-    #not sure about this tbh
-    return render(request, 'auctionapp/frontend/src/Home.vue', info)
-    
-
-
-
-
+def profile_POST(request):
+    body = json.loads(request.body)
+    profile = Profile(username = body['username'],bio = body['bio'], image = body['image'])
+    profile.save()
+    return JsonResponse({
+        'profile':[
+            profile.to_dict()
+            for profile in Profile.objects.all()
+        ]
+    })
+   
 
 @login_required
 def message(request):
