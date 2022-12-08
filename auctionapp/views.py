@@ -1,11 +1,10 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpRequest,Http404,JsonResponse
 import json
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import Http404
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Profile
+from .models import User, Profile,Item
 from .forms import Login, SignupForm
 
 # Create your views here.
@@ -55,3 +54,74 @@ def login_view(request):
         })
 
     return render(request, 'auctionapp/auth/login.html', {'form': form})
+
+
+@login_required
+def Item_api(request: HttpRequest)->HttpResponse:
+    if request.method == 'GET':
+        return JsonResponse({
+            'items': [
+                item.to_dict()
+                for item in Item.objects.all()
+            ]
+        })
+    if  request.method == 'POST':
+        body = json.loads(request.body)
+
+        item = Item(
+                    start_bid = body['start_bid'],
+                    bid = body['bid'],
+                    title=body['title'],
+                    description = body['description'],
+                    image = body['image'],
+                    bid_time_finish = body['bid_time_finish'],
+                    bought = body['bought'],
+                )
+        item.save()
+        return JsonResponse({
+            item.to_dict()
+            for item in Item.objects.all()
+        })
+
+@login_required
+
+def GET_Search(request):
+    return
+
+    
+def profile(request):
+    user = request.user
+
+    if 'bio' in request.POST and request.POST['bio']:
+        bio = request.POST['bio']
+        if user.profile:
+            user.profile.bio = bio
+            user.profile.save()
+        else:
+            profile = Profile(bio=bio, username = 'Anon')
+            profile.save()
+            user.profile = profile
+        user.save()
+    
+    info = {
+        'user':user,
+        'page': user.profile,
+        'session_key': request.session.session_key,
+        'meta': request.META,
+        
+        }
+    #not sure about this tbh
+    return render(request, 'auctionapp/frontend/src/Home.vue', info)
+    
+
+
+
+
+
+@login_required
+def message(request):
+    return
+
+def message_winner(request):
+    #cron job
+    return
