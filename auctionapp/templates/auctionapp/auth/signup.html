@@ -1,19 +1,15 @@
 {% extends "auctionapp/base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
-
-{%block content %}
-<div class='card w-30 shadow mx-auto h-75 m-4 p-3 bg-light'>
+<div class='card w-30 shadow mx-auto h-50 m-4 p-3 bg-light'>
     <div class='row align-items-left'>
-        <div class='col-sm-1'>
+        <div class='col-8'>
+            <h1 class='float left'>Signup</h1>
             <img width="40" class="" src="{% static 'auctionapp/logo.png' %}"> 
-        </div>
-        <div class='col-sm-11'>
-            <h1 class="float-sm-right">Login</h1>
         </div>
     </div>
     <div class="row">
         {% crispy form %}   
     </div>
 </div>
-{% endblock %}
+{%block content %}
