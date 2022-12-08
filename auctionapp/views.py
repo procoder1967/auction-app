@@ -98,7 +98,7 @@ def profile_GET(request: HttpRequest, profile_id: int)-> HttpResponse:
 
 def profile_POST(request):
     body = json.loads(request.body)
-    profile = Profile(username = body['username'],bio = body['bio'], image = staticimage)
+    profile = Profile(username = body['username'],bio = body['bio'], image = body['image'])
     profile.save()
     return JsonResponse({
         'profile':[
@@ -110,7 +110,7 @@ def profile_POST(request):
 
 @login_required
 def message(request):
-    
+    return
 
 def message_winner(request):
     #cron job
