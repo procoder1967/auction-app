@@ -6,7 +6,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=50,unique=True)
     email = models.EmailField(max_length=100,unique=True)
     city = models.CharField(max_length=50)
-    date_of_birth = models.DateField(default='1970/01/01')
+    date_of_birth = models.DateField(default='1970-01-01')
     messages = models.ManyToManyField(to='self',symmetrical=False,blank=True)
     Profile  = models.OneToOneField(to='Profile',null=True,on_delete=models.CASCADE)
 
