@@ -5,7 +5,7 @@
             <div class="px-4">
                 <div class="content flex">
                     <h1 class="font-bold text-lg w-96">Playstations 5 - BRAND NEW</h1>
-                    <img src="../assets/text.png" class="w-8 h-8 mx-60">
+                    <Message/>
                 </div>
                 <p class="text-gray-600 h-20">Text text text</p>
                 <h3>Top Bider:</h3>
@@ -24,12 +24,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import Message from './Message.vue';
 
 export default defineComponent({
-    setup () {
-        
-
-        return {}
-    }
+    setup() {
+        return {};
+    },
+    components: { Message }
 })
 </script>
